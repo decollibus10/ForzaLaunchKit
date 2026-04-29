@@ -1,0 +1,12 @@
+{
+  "siteUrl": "https://forza-capital-partners.example",
+  "cloudflareProjectName": "forza-capital-partners",
+  "hubspot": {
+    "portalId": "",
+    "region": "na1",
+    "fundingFormId": "",
+    "auditFormId": "",
+    "resourceFormId": "",
+    "investorFormId": ""
+  }
+}

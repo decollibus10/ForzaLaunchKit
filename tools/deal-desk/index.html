@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FORZA Deal Desk</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <header class="app-header">
+    <div>
+      <p class="eyebrow">FORZA CAPITAL PARTNERS LLC</p>
+      <h1>Deal Desk</h1>
+      <p class="lede">Internal calculator for pilot-box fit, capital exposure, factor-rate economics, remittance pressure, and risk notes before any offer leaves the building.</p>
+    </div>
+    <div class="header-card">
+      <span>Launch box</span>
+      <strong>NJ only · $5k-$15k · 12+ months · $15k+ monthly revenue</strong>
+    </div>
+  </header>
+
+  <main class="layout">
+    <section class="panel controls" aria-label="Deal inputs">
+      <div class="section-head">
+        <p class="eyebrow">Inputs</p>
+        <h2>Merchant and offer details</h2>
+      </div>
+
+      <div class="grid two">
+        <label>
+          <span>Business state</span>
+          <select id="state">
+            <option value="NJ">New Jersey</option>
+            <option value="other">Outside NJ</option>
+          </select>
+        </label>
+        <label>
+          <span>Position</span>
+          <select id="position">
+            <option value="first">First position</option>
+            <option value="second-top">Second behind top-tier lender</option>
+            <option value="stacked">Multiple active positions</option>
+          </select>
+        </label>
+        <label>
+          <span>Monthly gross revenue</span>
+          <input id="monthlyRevenue" type="number" min="0" step="1000" value="35000">
+        </label>
+        <label>
+          <span>Time in business, months</span>
+          <input id="monthsInBusiness" type="number" min="0" step="1" value="24">
+        </label>
+        <label>
+          <span>Average daily balance</span>
+          <input id="averageBalance" type="number" min="0" step="100" value="4200">
+        </label>
+        <label>
+          <span>Negative days, last 90</span>
+          <input id="negativeDays" type="number" min="0" step="1" value="2">
+        </label>
+        <label>
+          <span>NSFs / returns, last 90</span>
+          <input id="nsfs" type="number" min="0" step="1" value="0">
+        </label>
+        <label>
+          <span>Existing weekly remittance</span>
+          <input id="existingWeekly" type="number" min="0" step="100" value="0">
+        </label>
+      </div>
+
+      <hr>
+
+      <div class="grid two">
+        <label>
+          <span>Capital pool</span>
+          <input id="capitalPool" type="number" min="0" step="5000" value="75000">
+        </label>
+        <label>
+          <span>Reserve percentage</span>
+          <input id="reservePct" type="number" min="0" max="80" step="1" value="30">
+        </label>
+        <label>
+          <span>Active deployed exposure</span>
+          <input id="activeExposure" type="number" min="0" step="1000" value="0">
+        </label>
+        <label>
+          <span>Max single merchant exposure</span>
+          <input id="singleExposurePct" type="number" min="1" max="50" step="1" value="15">
+        </label>
+      </div>
+
+      <hr>
+
+      <div class="grid two">
+        <label>
+          <span>Advance amount</span>
+          <input id="advance" type="number" min="0" step="1000" value="10000">
+        </label>
+        <label>
+          <span>Factor rate</span>
+          <input id="factor" type="number" min="1" step="0.01" value="1.50">
+        </label>
+        <label>
+          <span>Discount factor</span>
+          <input id="discountFactor" type="number" min="1" step="0.01" value="1.10">
+        </label>
+        <label>
+          <span>Expected term, days</span>
+          <input id="termDays" type="number" min="1" step="1" value="90">
+        </label>
+      </div>
+
+      <div class="button-row">
+        <button id="resetBtn" type="button">Reset sample</button>
+        <button id="printBtn" type="button">Print memo</button>
+      </div>
+    </section>
+
+    <section class="stack" aria-label="Deal outputs">
+      <section class="panel decision" id="decisionPanel">
+        <div>
+          <p class="eyebrow">Decision band</p>
+          <h2 id="decisionTitle">Review</h2>
+          <p id="decisionText">Enter deal details to calculate risk and exposure.</p>
+        </div>
+        <div class="score-ring">
+          <span id="scoreValue">0</span>
+          <small>risk score</small>
+        </div>
+      </section>
+
+      <section class="metrics">
+        <article>
+          <span>Purchased amount</span>
+          <strong id="purchasedAmount">$0</strong>
+        </article>
+        <article>
+          <span>Standard gross spread</span>
+          <strong id="standardSpread">$0</strong>
+        </article>
+        <article>
+          <span>30-day discount amount</span>
+          <strong id="discountAmount">$0</strong>
+        </article>
+        <article>
+          <span>Discount gross spread</span>
+          <strong id="discountSpread">$0</strong>
+        </article>
+      </section>
+
+      <section class="panel">
+        <div class="section-head">
+          <p class="eyebrow">Capital controls</p>
+          <h2>Exposure check</h2>
+        </div>
+        <div class="table-like">
+          <div><span>Deployable capital after reserve</span><strong id="deployableCapital">$0</strong></div>
+          <div><span>Available capacity</span><strong id="availableCapacity">$0</strong></div>
+          <div><span>Single merchant limit</span><strong id="merchantLimit">$0</strong></div>
+          <div><span>Advance vs. available capacity</span><strong id="capacityStatus">Review</strong></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-head">
+          <p class="eyebrow">Remittance pressure</p>
+          <h2>Cash-flow load</h2>
+        </div>
+        <div class="table-like">
+          <div><span>Estimated monthly remittance</span><strong id="monthlyRemittance">$0</strong></div>
+          <div><span>Estimated weekly remittance</span><strong id="weeklyRemittance">$0</strong></div>
+          <div><span>Estimated daily remittance</span><strong id="dailyRemittance">$0</strong></div>
+          <div><span>Estimated revenue holdback</span><strong id="holdbackPct">0%</strong></div>
+          <div><span>Combined remittance load</span><strong id="combinedLoad">0%</strong></div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="section-head">
+          <p class="eyebrow">Risk notes</p>
+          <h2>Approval memo prompts</h2>
+        </div>
+        <ul class="notes" id="riskNotes"></ul>
+      </section>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <p>This is an internal planning tool, not legal, tax, accounting, investment, or financing advice. Counsel should review contracts, disclosures, servicing, and funding-day controls before any deal is funded.</p>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /
+
+# Staging default. After counsel/domain approval, change this to:
+# User-agent: *
+# Allow: /
+# Sitemap: https://forza-capital-partners.example/sitemap.xml

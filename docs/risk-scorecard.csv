@@ -1,0 +1,17 @@
+Category,Field,Pass,Caution,Stop,Notes
+Pilot fit,State,NJ only,N/A,Outside NJ,Launch is NJ-only
+Pilot fit,Time in business,12+ months,9-11 months,Under 9 months,Current site pre-qual minimum is 12+ months
+Pilot fit,Monthly gross revenue,$25000+,$15000-$24999,Under $15000,Launch minimum is $15k/month
+Deal size,Advance amount,$5000-$15000,$15001-$25000,Over $25000,First pilot box is $5k-$15k
+Position,Existing funding,First position,Second behind top-tier lender,Multiple active advances,Second position requires senior contract and balance review
+Cash flow,Average daily balance,10x+ estimated daily remittance,5x-9.9x estimated daily remittance,Under 5x estimated daily remittance,Use bank statements
+Cash flow,Negative days last 90,0-2,3-5,6+,Recurring negative days are a risk flag
+Cash flow,NSFs/returns last 90,0,1-2,3+,Pattern matters more than one isolated issue
+Exposure,Single merchant exposure,Under 15% capital pool,15%-20%,Over 20%,Default tool limit is 15%
+Exposure,Available capacity,Advance under capacity,Advance within 10% of cap,Advance over capacity,Keep reserve untouched
+Remittance,Estimated revenue holdback,Under 12%,12%-18%,Over 18%,Higher holdback can stress operations
+Remittance,Combined remittance load,Under 18%,18%-24%,Over 24%,Include existing weekly remittance
+Legal/process,Confession of judgment,None,N/A,Any COJ language,Do not use COJ posture
+Legal/process,Use of funds,Specific business purpose,Vague but business-related,Personal/speculative,Clarify before offer
+Verification,Entity and owner verification,Complete,Pending,Unable/refused,Do not fund without verification
+Verification,UCC/tax lien/litigation,Clear,Needs explanation,Material unresolved issue,Review with counsel

@@ -1,0 +1,8 @@
+channel,example_url,utm_source,utm_medium,utm_campaign,utm_content,utm_term
+Meta funding ad,/nj-business-funding/?utm_source=meta&utm_medium=paid_social&utm_campaign=nj_funding_pilot&utm_content=eligibility_static_v1&utm_term=broad_nj,meta,paid_social,nj_funding_pilot,eligibility_static_v1,broad_nj
+Meta checklist ad,/resources/nj-funding-readiness-checklist/?utm_source=meta&utm_medium=paid_social&utm_campaign=nj_checklist_lead_magnet&utm_content=checklist_static_v1&utm_term=broad_nj,meta,paid_social,nj_checklist_lead_magnet,checklist_static_v1,broad_nj
+Google Business Profile,/nj-business-funding/?utm_source=google&utm_medium=local_profile&utm_campaign=gbp_launch&utm_content=website_button&utm_term=nj,google,local_profile,gbp_launch,website_button,nj
+Organic article CTA,/eligibility/?utm_source=site&utm_medium=internal&utm_campaign=seo_article_cta&utm_content=bottom_cta&utm_term=revenue_based_funding,site,internal,seo_article_cta,bottom_cta,revenue_based_funding
+Email follow-up,/eligibility/?utm_source=hubspot&utm_medium=email&utm_campaign=resource_nurture&utm_content=eligibility_followup&utm_term=checklist_lead,hubspot,email,resource_nurture,eligibility_followup,checklist_lead
+Referral partner,/eligibility/?utm_source=partner&utm_medium=referral&utm_campaign=nj_partner_intro&utm_content=partner_name&utm_term=service_business,partner,referral,nj_partner_intro,partner_name,service_business
+Instagram investor awareness,/investor-overview/?utm_source=instagram&utm_medium=paid_social&utm_campaign=investor_awareness_cashflow_gap&utm_content=orders_contracts_v1&utm_term=broad_financial_services,instagram,paid_social,investor_awareness_cashflow_gap,orders_contracts_v1,broad_financial_services

@@ -1,0 +1,20 @@
+{
+  "name": "forza-capital-partners-launch-kit",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:static": "node tools/build-static-site.mjs",
+    "serve:static": "python3 -m http.server 4173 --directory static-site",
+    "serve:tools": "python3 -m http.server 4173",
+    "check:static": "node --check tools/build-static-site.mjs && node --check static-site/assets/js/site.js && node --check static-site/assets/js/hubspot-forms.js && node --check static-site/assets/js/forza-config.js",
+    "check:newsletter": "node --check tools/newsletter-research-machine/app.js",
+    "check:launch": "npm run build:static && npm run check:static && node tools/check-launch-readiness.mjs",
+    "configure:hubspot": "node tools/set-hubspot-config.mjs",
+    "login:cloudflare": "npx wrangler login",
+    "deploy:cloudflare": "npx wrangler pages deploy static-site --project-name=forza-capital-partners",
+    "package:static": "mkdir -p dist && rm -f dist/forza-capital-partners-static-site.zip && (cd static-site && zip -qr ../dist/forza-capital-partners-static-site.zip . -x '*.DS_Store')",
+    "package:theme": "mkdir -p dist && rm -f dist/forza-capital-partners-theme.zip && zip -qr dist/forza-capital-partners-theme.zip forza-capital-partners-theme -x '*.DS_Store'",
+    "package:launch": "npm run package:static && npm run package:theme && rm -f dist/forza-capital-partners-launch-kit.zip && zip -qr dist/forza-capital-partners-launch-kit.zip README.md package.json wrangler.toml config tools docs deploy static-site preview forza-capital-partners-theme -x '*.DS_Store' '*/node_modules/*'"
+  }
+}
