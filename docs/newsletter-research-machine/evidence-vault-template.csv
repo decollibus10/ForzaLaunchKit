@@ -1,4 +1,0 @@
-id,idea_id,source_type,source_title,source_url_or_file,source_quality,claim_supported,quote_or_fact,private_flag,approved_for_public_use,notes
-ev_2026_0001,idea_2026_0001,deal note,Sanitized second-position review,internal,4,Second-position risk depends on verified senior obligations,"Senior balance and weekly remittance must be verified before offer structure.",true,false,Sanitize before public use
-ev_2026_0002,idea_2026_0002,internal document,FORZA content calendar,docs/content-calendar.md,3,Negative-fit education is already part of content strategy,"Week 4 topic is when not to use a merchant cash advance.",false,true,Can cite as internal editorial direction
-ev_2026_0003,idea_2026_0003,internal document,Risk scorecard,docs/risk-scorecard.csv,4,Average daily balance matters against estimated daily remittance,"Cash-flow target compares average daily balance with estimated daily remittance.",false,true,Use as operating framework rather than external claim

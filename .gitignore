@@ -1,5 +1,13 @@
 .DS_Store
 **/.DS_Store
 node_modules/
-dist/*.zip
-_archive/
+.next/
+out/
+dist/
+.env
+.env.local
+.env.*.local
+*.tsbuildinfo
+supabase/.branches
+supabase/.temp
+.vercel

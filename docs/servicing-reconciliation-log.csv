@@ -1,2 +1,0 @@
-Merchant,File ID,Funding Date,Advance Amount,Total Purchased Amount,Remittance Method,Expected Term Days,Expected Weekly Remittance,Actual Revenue Period,Actual Revenue,Actual Remittance,Reconciliation Requested,Request Date,Decision,Adjustment,Notes
-Example HVAC LLC,FZ-0001,2026-05-01,$10000,$15000,Weekly ACH with reconciliation,90,$1167,2026-05-01 to 2026-05-31,$35000,$4668,No,,,,Example row - replace before use

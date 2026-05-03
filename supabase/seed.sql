@@ -1,0 +1,3 @@
+-- Local seed data is intentionally empty.
+-- Create auth users through Supabase Studio, then set an admin with:
+-- update public.profiles set role = 'admin' where user_id = '<auth-user-id>';

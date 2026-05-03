@@ -1,136 +1,113 @@
-# FORZA CAPITAL PARTNERS LLC Launch Kit
+# FORZA ClearMatch
 
-This workspace contains the launch package for **FORZA CAPITAL PARTNERS LLC**, an NJ-only business receivables-purchase funding firm with a separate AI Automation Audit consulting line.
+FORZA ClearMatch is the new focused product for **FORZA CAPITAL PARTNERS LLC**: an NJ-first MCA broker marketplace and merchant deal-room dashboard.
 
-Primary deployment path is now a static website on Cloudflare Pages with HubSpot Free for lead capture. The WordPress theme remains as a backup path, but the static site is the leaner launch target.
+The old owner-funded launch kit, WordPress theme, investor deck, AI audit offer, static export, and newsletter tooling have been removed from the active project. The repo now centers on three surfaces:
 
-## Primary Deliverables
+- Public acquisition funnels for Meta and Google traffic.
+- A merchant dashboard for MCA offer comparison, document status, renewal/payoff tracking, and outside-offer review.
+- An internal admin deal desk for lead review, funder shopping, offer entry, and publish/unpublish controls.
 
-- `static-site/` - Cloudflare Pages-ready static website with lead capture routes.
-- `config/forza-site.json` - source config for staging URL, future domain, and HubSpot form IDs.
-- `tools/build-static-site.mjs` - generator for rebuilding the static site from this workspace.
-- `package.json` - local build, check, serve, and Cloudflare deploy scripts.
-- `deploy/cloudflare-pages.md` - no-VPS deployment instructions.
-- `deploy/hubspot-forms.md` - HubSpot form setup and routing rules.
-- `dist/` - generated zip packages for handoff or upload.
-- `docs/lead-generation-engine.md` - SEO, paid traffic, landing page, and CRM funnel plan.
-- `docs/landing-page-map.csv` - page-by-page lead intent and CTA map.
-- `docs/hubspot-lead-capture-fields.csv` - HubSpot property/form blueprint.
-- `docs/utm-tracking-map.csv` - campaign tracking examples.
-- `docs/lead-magnet-nj-funding-readiness-checklist.md` - checklist resource copy.
-- `docs/newsletter-research-machine/` - newsletter research operating system, templates, and agent prompts.
-- `docs/project-notes/` - prior context and next-step notes kept out of the root.
-- `forza-capital-partners-theme/` - WordPress fallback theme.
-- `tools/deal-desk/` - local internal deal economics and risk calculator.
-- `tools/newsletter-research-machine/` - local editorial steering dashboard.
-- `docs/legal-templates/` - counsel-draft agreement, offer, ACH, guaranty, reconciliation, payoff, servicing, and call-script templates.
-- `investor-deck/` - source and generated files for the investor presentation.
-- `_archive/legacy-root-copy-2026-04-29/` - older duplicate root layout preserved for reference.
+## Offer
 
-## Static Site
+**FORZA ClearMatch** costs **$500/month**.
 
-Build:
+Merchants get a private MCA offer dashboard, deal shopping through funding partners, side-by-side comparison, offer math, file packaging, outside-offer review, and renewal/payoff tracking.
+
+If a merchant funds through FORZA, FORZA may receive or retain a broker fee capped at **1% of the funded amount**.
+
+## Tech Stack
+
+- Next.js App Router
+- React
+- Supabase Auth with email magic links
+- Supabase Postgres as the source of truth
+- Supabase Storage for merchant documents
+- Row Level Security on public tables and document objects
+
+## Local Setup
 
 ```bash
-npm run build:static
+npm install
+cp .env.example .env.local
+npm run dev
 ```
 
-Preview:
-
-```bash
-npm run serve:static
-```
-
-Then open:
+Open:
 
 ```text
-http://localhost:4173/
+http://localhost:3000
 ```
 
-Check JavaScript and launch readiness:
-
-```bash
-npm run check:launch
-```
-
-Package clean handoff zips into `dist/`:
-
-```bash
-npm run package:launch
-```
-
-## Lead Generation Pages
-
-- `/` - homepage and broad CTA.
-- `/nj-business-funding/` - statewide SEO and campaign landing page.
-- `/eligibility/` - primary funding pre-qual page.
-- `/industries/contractor-funding-nj/`
-- `/industries/restaurant-funding-nj/`
-- `/industries/salon-funding-nj/`
-- `/industries/auto-repair-funding-nj/`
-- `/resources/nj-funding-readiness-checklist/`
-- `/investor-overview/` - private investor overview request page.
-- `/insights/` - SEO article hub.
-- `/ai-automation-audit/` - separate consulting form.
-
-## HubSpot
-
-The static site has safe fallback forms that preview the fields and eligibility logic only. They do not send lead data until HubSpot IDs are added in:
+The app runs in demo mode until Supabase environment variables are added.
+The public launch domain is:
 
 ```text
-config/forza-site.json
+https://forza-funding.com
 ```
 
-Create four HubSpot forms:
+Paid funnel pages:
 
-- `FORZA - Funding Eligibility`
-- `FORZA - AI Automation Audit`
-- `FORZA - NJ Funding Readiness Checklist`
-- `FORZA - Investor Overview Request`
+```text
+/funnels/offer-dashboard-nj
+/funnels/compare-mca-offers-nj
+/funnels/mca-second-opinion-nj
+/funnels/factor-rate-calculator-nj
+```
 
-Then run:
+## Supabase
+
+Start local Supabase:
 
 ```bash
-npm run configure:hubspot -- --portalId=PORTAL_ID --fundingFormId=FORM_ID --auditFormId=FORM_ID --resourceFormId=FORM_ID --investorFormId=FORM_ID
-npm run build:static
+npm run supabase:start
+npm run supabase:reset
 ```
 
-## Important Launch Controls
+Then copy the local API URL and publishable key into `.env.local`.
 
-- The generated site blocks indexing by default.
+To create an admin account:
+
+1. Sign in through the app or create a user in Supabase Studio.
+2. Run:
+
+```sql
+update public.profiles
+set role = 'admin'
+where user_id = '<auth-user-id>';
+```
+
+## Checks
+
+```bash
+npm run typecheck
+npm run lint
+npm run build
+```
+
+## Ad Engine
+
+Add browser analytics IDs only when ready to test live tags:
+
+```bash
+NEXT_PUBLIC_GTM_ID=
+NEXT_PUBLIC_GA4_MEASUREMENT_ID=
+NEXT_PUBLIC_GOOGLE_ADS_ID=
+NEXT_PUBLIC_META_PIXEL_ID=
+```
+
+Server-side Meta CAPI uses server-only env vars and skips safely when blank:
+
+```bash
+META_CAPI_ACCESS_TOKEN=
+META_CAPI_GRAPH_API_VERSION=v24.0
+META_CAPI_TEST_EVENT_CODE=
+```
+
+## Launch Guardrails
+
+- NJ-first until counsel approves broader state routing.
 - Public forms collect business basics only.
-- Do not collect SSNs, bank logins, bank statements, contracts, or sensitive documents on public forms.
-- Counsel should review contracts, disclosures, ads, privacy policy, terms, servicing, reconciliation, and collection language before funding traffic goes live.
-- Do not fund any deal until the contract/disclosure/servicing package is approved.
-
-## Internal Deal Desk
-
-Run a root-level local server and visit:
-
-```bash
-python3 -m http.server 4173
-```
-
-```text
-http://localhost:4173/tools/deal-desk/
-```
-
-The Deal Desk is an internal planning calculator. It is not an approval engine and does not replace underwriting, counsel review, or funding-day controls.
-
-## Newsletter Research Machine
-
-Run the tools server and visit:
-
-```bash
-npm run serve:tools
-```
-
-```text
-http://localhost:4173/tools/newsletter-research-machine/
-```
-
-Check the dashboard JavaScript:
-
-```bash
-npm run check:newsletter
-```
+- Sensitive documents are uploaded after login.
+- Ads promote dashboard transparency and offer comparison, not guaranteed approval or instant funding.
+- Counsel must review broker disclosures, paid-ad copy, commercial-financing obligations, privacy language, and document workflows before paid traffic.
