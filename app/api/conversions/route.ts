@@ -1,10 +1,7 @@
-import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
 import { hasSupabasePublicEnv, subscriptionOffer } from "@/lib/config";
 import { createClient } from "@/lib/supabase/server";
 import type { CalculatorSnapshot, ConversionEventName } from "@/lib/types";
-
-export const runtime = "nodejs";
 
 type ConversionPayload = {
   eventName?: ConversionEventName;
@@ -38,16 +35,19 @@ function clean(value: unknown) {
   return String(value || "").trim();
 }
 
-function sha256(value: string) {
-  return createHash("sha256").update(value).digest("hex");
+async function sha256(value: string) {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
+  return Array.from(new Uint8Array(digest))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
 }
 
-function normalizedHash(value: unknown) {
+async function normalizedHash(value: unknown) {
   const normalized = clean(value).toLowerCase();
   return normalized ? sha256(normalized) : undefined;
 }
 
-function phoneHash(value: unknown) {
+async function phoneHash(value: unknown) {
   const normalized = clean(value).replace(/\D/g, "");
   return normalized ? sha256(normalized) : undefined;
 }
@@ -111,8 +111,8 @@ export async function POST(request: Request) {
         action_source: "website",
         event_source_url: payload.landingUrl || payload.sourcePage,
         user_data: {
-          em: normalizedHash(payload.email),
-          ph: phoneHash(payload.phone),
+          em: await normalizedHash(payload.email),
+          ph: await phoneHash(payload.phone),
           client_ip_address: clientIp,
           client_user_agent: userAgent,
           fbp: clean(payload.fbp) || undefined,

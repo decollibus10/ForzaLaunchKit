@@ -11,3 +11,7 @@ dist/
 supabase/.branches
 supabase/.temp
 .vercel
+.open-next/
+.wrangler/
+.dev.vars
+cloudflare-env.d.ts

@@ -78,11 +78,7 @@ type FunnelPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export const dynamicParams = false;
-
-export function generateStaticParams() {
-  return Object.keys(funnelPages).map((slug) => ({ slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: FunnelPageProps): Promise<Metadata> {
   const { slug } = await params;

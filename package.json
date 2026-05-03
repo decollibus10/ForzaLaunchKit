@@ -7,6 +7,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "upload": "opennextjs-cloudflare build && opennextjs-cloudflare upload",
+    "cloudflare:build": "opennextjs-cloudflare build",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "check": "npm run typecheck && npm run lint && npm run build",
@@ -15,6 +20,7 @@
     "supabase:migrations": "npx supabase migration list --local"
   },
   "dependencies": {
+    "@opennextjs/cloudflare": "^1.19.5",
     "@supabase/ssr": "0.10.2",
     "@supabase/supabase-js": "2.105.1",
     "lucide-react": "1.14.0",
@@ -28,7 +34,8 @@
     "@types/react-dom": "19.2.3",
     "eslint": "9.39.2",
     "eslint-config-next": "16.2.4",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "wrangler": "^4.87.0"
   },
   "overrides": {
     "postcss": "8.5.10"

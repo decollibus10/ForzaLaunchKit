@@ -20,6 +20,7 @@ If a merchant funds through FORZA, FORZA may receive or retain a broker fee capp
 
 - Next.js App Router
 - React
+- Cloudflare Workers via OpenNext
 - Supabase Auth with email magic links
 - Supabase Postgres as the source of truth
 - Supabase Storage for merchant documents
@@ -84,6 +85,18 @@ npm run typecheck
 npm run lint
 npm run build
 ```
+
+## Cloudflare Workers
+
+The production target is Cloudflare Workers using `@opennextjs/cloudflare`.
+
+```bash
+cp .dev.vars.example .dev.vars
+npm run preview
+npm run deploy
+```
+
+The Worker is configured in `wrangler.jsonc` for `forza-funding.com` and `www.forza-funding.com`.
 
 ## Ad Engine
 
