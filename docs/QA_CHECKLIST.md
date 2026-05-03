@@ -1,47 +1,48 @@
-# QA Checklist
+# Launch QA Gate
 
-## Public Pages
+Run this before paid traffic.
 
-- No direct-funder language remains.
-- No AI audit, investor overview, WordPress, or owner-funded pages are linked.
-- Primary CTA says `Create Your Offer Dashboard`.
-- Secondary CTA says `Compare An Offer You Already Received`.
-- Broker disclosure appears on public pages.
-- Meta and Google funnel copy avoids approval guarantees and instant-funding claims.
-- Paid funnel pages exist at `/funnels/offer-dashboard-nj`, `/funnels/compare-mca-offers-nj`, `/funnels/mca-second-opinion-nj`, and `/funnels/factor-rate-calculator-nj`.
-- Paid funnel pages show the ClearMatch price, broker role, 1% fee cap, no funding guarantee, and business-purpose financing language.
+## Build And Deploy
 
-## Ad Engine
+- [ ] `npm run typecheck`
+- [ ] `npm run lint`
+- [ ] `npm run build`
+- [ ] `npm run cloudflare:build`
+- [ ] `npx wrangler deploy --dry-run`
+- [ ] Live domain serves `/`, `/compare`, `/calculator`, `/login`, and all paid funnel URLs.
 
-- UTMs, `gclid`, `fbclid`, referrer, landing URL, first touch, and last touch persist into lead attribution records.
-- Calculator lead submissions include calculator snapshot values.
-- Lead form responses include `{ id, nextUrl }`.
-- Submitted website leads redirect to `/login` with email, lead id, and funnel intent.
-- GTM/GA4/Meta browser events are env-gated and do not require third-party scripts in local demo mode.
-- `/api/conversions` skips safely when Meta CAPI env vars are blank.
-- Server-side tokens are never exposed as `NEXT_PUBLIC_`.
-- Admin ad performance view groups leads by channel, campaign, funnel, dashboard-start count, and calculator-lead count.
+## Public Copy
 
-## Dashboard
+- [ ] No direct-funder, owner-funded, AI audit, investor, WordPress, or newsletter-research positioning.
+- [ ] Primary CTA: `Create Your Offer Dashboard`.
+- [ ] Secondary CTA: `Compare An Offer You Already Received`.
+- [ ] Paid pages show broker role, $500/month price, 1% fee cap, no-guarantee language, partner-underwriting language, and business-purpose positioning.
+- [ ] Paid pages avoid guaranteed approval, instant funding, no-doc funding, bad-credit targeting, hardship hooks, consumer-loan framing, and direct-funder claims.
 
-- Logged-out users redirect to login when Supabase env vars are configured.
-- Demo mode appears only when Supabase env vars are missing.
-- Published offers appear in merchant dashboard.
-- Draft and archived offers do not appear to merchants.
-- Cash-pressure indicator updates from offer payment and merchant revenue.
-- Document uploads go to `merchant-documents/<merchant_profile_id>/...`.
+## Lead And Attribution
 
-## Admin
+- [ ] Google-style URL with `utm_*` and `gclid` persists into lead and attribution records.
+- [ ] Meta-style URL with `utm_*`, `fbclid`, `_fbp`, and `_fbc` persists into lead and attribution records.
+- [ ] Lead form returns `{ id, nextUrl }` and routes to `/login` with email, lead id, and intent.
+- [ ] Calculator leads include calculator snapshot values.
+- [ ] `dataLayer` receives `lead_submitted`, `calculator_lead`, and `dashboard_started`.
+- [ ] `/api/conversions` skips safely when Meta CAPI env vars are blank.
+- [ ] Admin ad performance groups leads by channel, campaign, funnel, dashboard starts, and calculator leads.
 
-- Non-admin users cannot access admin data.
-- Admin can create draft offers.
-- Admin can publish and unpublish offers.
-- Funder ids stay internal.
-- Merchant-facing offer labels stay FORZA-branded.
+## Auth, Dashboard, Admin
 
-## Supabase
+- [ ] Logged-out users cannot access dashboard/admin when Supabase env vars are configured.
+- [ ] Magic-link confirmation route works with the Supabase email template.
+- [ ] Merchant dashboard shows published offers only.
+- [ ] Draft and archived offers stay hidden from merchants.
+- [ ] Cash-pressure score updates from offer payment and merchant revenue.
+- [ ] Admin can create, publish, unpublish, and archive offers.
+- [ ] Funder identities stay internal; merchant labels stay FORZA-branded.
 
-- RLS is enabled on every public table.
-- Storage policies restrict document access to merchant owners and admins.
-- Service role key is not exposed as `NEXT_PUBLIC_`.
-- Magic-link confirmation route works with the Supabase email template.
+## Security And Compliance
+
+- [ ] RLS is enabled on every exposed public table.
+- [ ] Storage policies restrict documents to merchant owners and admins.
+- [ ] Service role key is never exposed as `NEXT_PUBLIC_`.
+- [ ] Document upload path stays under `merchant-documents/<merchant_profile_id>/...`.
+- [ ] Counsel has reviewed broker disclosure, address strategy, ad copy, privacy language, and NJ commercial-financing obligations.

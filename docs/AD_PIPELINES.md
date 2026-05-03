@@ -1,38 +1,30 @@
 # FORZA Ad Engine V1
 
-## Launch Assumption
+## Launch Shape
 
-- 14-day lean test.
-- $100/day total.
-- 65% Google high-intent search, 35% Meta dashboard-transparency campaigns.
-- Website forms only in v1; no native Meta or Google lead forms.
-- Paid spend waits for counsel review of ad copy, disclosures, privacy language, document language, and NJ commercial-financing obligations.
+- 14-day test, about **$100/day**.
+- Budget split: **65% Google Search**, **35% Meta**.
+- Website forms only; no native lead forms in v1.
+- Paid spend starts only after counsel reviews ad copy, disclosures, privacy language, document language, and NJ commercial-financing obligations.
 
 ## Funnel URLs
 
-- `/funnels/offer-dashboard-nj`
-- `/funnels/compare-mca-offers-nj`
-- `/funnels/mca-second-opinion-nj`
-- `/funnels/factor-rate-calculator-nj`
+| Intent | URL |
+| --- | --- |
+| Dashboard start | `/funnels/offer-dashboard-nj` |
+| Compare offers | `/funnels/compare-mca-offers-nj` |
+| Second opinion | `/funnels/mca-second-opinion-nj` |
+| Calculator lead | `/funnels/factor-rate-calculator-nj` |
 
-## Campaign Naming
+## Tracking Rules
 
-Use this pattern:
+Campaign naming:
 
 ```text
 forza_[platform]_[state]_[intent]_[audience]_[yyyyq#]
 ```
 
-Examples:
-
-- `forza_google_nj_compare_mca_search_2026q2`
-- `forza_google_nj_factor_rate_search_2026q2`
-- `forza_meta_nj_dashboard_transparency_broad_2026q2`
-- `forza_meta_nj_second_opinion_retargeting_2026q2`
-
-## UTM Rules
-
-Required query fields:
+Required UTMs:
 
 ```text
 utm_source=google|meta
@@ -42,88 +34,40 @@ utm_content=<ad_or_creative_name>
 utm_term=<keyword_or_audience>
 ```
 
-The app also captures `gclid`, `fbclid`, `_fbp`, `_fbc`, first touch, last touch, referrer, landing URL, funnel intent, consent flags, and calculator snapshots when present.
+Also captured when present: `gclid`, `fbclid`, `_fbp`, `_fbc`, first touch, last touch, referrer, landing URL, funnel intent, consent flags, and calculator snapshot.
 
-## Conversion Events
+Conversion events:
 
-- `lead_submitted`: any paid funnel form outside the calculator.
-- `calculator_lead`: calculator form submitted with a calculator snapshot.
-- `dashboard_started`: login/magic-link step started after lead submission.
+- `lead_submitted`
+- `calculator_lead`
+- `dashboard_started`
 
-Browser events go to `dataLayer`, GA4/Google Ads, and Meta Pixel when env vars are configured. Server events post to `/api/conversions`; Meta CAPI is skipped safely when `NEXT_PUBLIC_META_PIXEL_ID` or `META_CAPI_ACCESS_TOKEN` is missing.
+Browser events are env-gated through GTM/GA4/Meta Pixel. Server events post to `/api/conversions`; Meta CAPI skips safely when tokens are blank.
 
-## Google Search Structure
+## Campaign Map
 
-Campaigns:
+| Platform | Campaign | Page | Main hook |
+| --- | --- | --- | --- |
+| Google | Compare MCA Offers NJ | `/funnels/compare-mca-offers-nj` | Compare MCA offers before you sign. |
+| Google | MCA Offer Review NJ | `/funnels/mca-second-opinion-nj` | Get a second opinion on confusing terms. |
+| Google | Factor Rate Calculator NJ | `/funnels/factor-rate-calculator-nj` | Estimate payback, payment, and cash pressure. |
+| Meta | Dashboard Transparency NJ | `/funnels/offer-dashboard-nj` | Create a private offer dashboard. |
+| Meta | Offer Checker Waitlist | TBD | Free opt-in MCA Offer Checker. |
 
-- Compare MCA Offers NJ
-- MCA Offer Review NJ
-- MCA Second Opinion NJ
-- Factor Rate Calculator NJ
+Meta campaigns reaching US audiences must use the Financial Products and Services special ad category.
 
-Initial keyword themes:
+## Copy Rules
 
-- `compare mca offers`
-- `merchant cash advance offer review`
-- `mca second opinion`
-- `factor rate calculator`
-- `merchant cash advance broker nj`
-
-Copy anchors:
+Allowed anchors:
 
 - Compare MCA offers before you sign.
 - Create a private offer dashboard.
 - Review factor rate, payback, payment, fees, and renewal notes.
 - $500/month ClearMatch membership.
 - 1% broker-fee cap if funded through FORZA.
+- Business-purpose commercial financing only.
 
-## Meta Structure
-
-Use the Financial Products and Services special ad category for campaigns reaching US audiences.
-
-Campaign themes:
-
-- Dashboard transparency.
-- Outside-offer review.
-- Factor-rate education.
-- MCA second opinion.
-- Free MCA Offer Checker waitlist after the website is live.
-
-Audience defaults:
-
-- NJ launch geography.
-- Broad special-category compliant targeting.
-- Retargeting only where permitted and reviewed.
-
-## Extension Lead Magnet
-
-The Chrome extension is a future acquisition and retention tool, not a blocker for the first ad launch.
-
-Public hook:
-
-```text
-Free MCA Offer Checker
-Decode factor rate, payback, payments, fees, and cash pressure before you sign.
-```
-
-Allowed CTA language:
-
-- Install the free MCA Offer Checker.
-- Decode this offer.
-- Send this offer to my FORZA dashboard.
-- Get a second opinion before signing.
-
-Ad and landing-page rules:
-
-- Frame the extension as an opt-in tool, not a background monitor.
-- Do not say it watches every funding site or automatically intercepts competitor offers.
-- Do not use notifications for ads or promotional nudges.
-- Make the merchant click the extension before reading page content or selected text.
-- Explain that submitted offer text/documents may be sent to FORZA for dashboard comparison.
-
-## Banned Claims
-
-Do not use:
+Banned claims:
 
 - Guaranteed approval.
 - Instant funding.
@@ -133,24 +77,4 @@ Do not use:
 - Consumer-loan framing.
 - Claims that FORZA directly funds, underwrites, or approves deals.
 
-## Landing Page Requirements
-
-Every paid page must visibly include:
-
-- FORZA broker role.
-- $500/month ClearMatch membership.
-- 1% broker-fee cap if funded through FORZA.
-- No funding guarantee.
-- Funding partners control approval, terms, costs, and underwriting.
-- Business-purpose commercial financing positioning.
-- Business address before paid launch.
-
-## QA Checklist
-
-- Submit a Google-style URL with `utm_*` and `gclid`; confirm lead and attribution records contain those values.
-- Submit a Meta-style URL with `utm_*`, `fbclid`, `_fbp`, and `_fbc`; confirm lead and attribution records contain those values.
-- Confirm form response returns `{ id, nextUrl }` and redirects to `/login` with email, lead id, and intent.
-- Confirm `dataLayer` receives `lead_submitted`, `calculator_lead`, and `dashboard_started`.
-- Confirm server conversion endpoint returns skipped status when Meta env vars are blank.
-- Confirm admin ad performance groups leads by channel, campaign, funnel, dashboard starts, and calculator leads.
-- Confirm paid pages avoid banned claims and show the ClearMatch disclosure language.
+Every paid page must show the broker role, ClearMatch price, 1% fee cap, no-guarantee language, partner-underwriting language, business-purpose positioning, and a compliant business address strategy before launch.

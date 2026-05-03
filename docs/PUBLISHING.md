@@ -1,40 +1,26 @@
-# Publishing Notes
+# Publishing Runbook
 
-## Current Deployment
+## Target
 
-- Platform: Cloudflare Workers
-- Adapter: `@opennextjs/cloudflare`
-- Worker name: `forza-clearmatch`
-- Production domains:
-  - `https://forza-funding.com`
-  - `https://www.forza-funding.com`
+- Platform: Cloudflare Workers.
+- Adapter: `@opennextjs/cloudflare`.
+- Worker: `forza-clearmatch`.
+- Domains: `https://forza-funding.com`, `https://www.forza-funding.com`.
 
-## Cloudflare Commands
+## Deploy
 
 ```bash
 npm install
-npm run preview
+npm run cloudflare:build
+npx wrangler deploy --dry-run
 npm run deploy
 ```
 
-`npm run preview` builds with OpenNext and runs the app locally in the Workers runtime. `npm run deploy` builds and deploys the Worker.
+Use `npm run preview` for local Worker runtime testing.
 
-## Domain Setup
+## Required Production Env
 
-The domain uses Cloudflare DNS. `wrangler.jsonc` declares custom domains for `forza-funding.com` and `www.forza-funding.com`, so Cloudflare can attach the Worker directly to both hostnames.
-
-If Cloudflare reports that an existing DNS record blocks the custom domain, remove the conflicting A records pointing to `76.76.21.21`, then deploy again or add the custom domains from Workers & Pages > `forza-clearmatch` > Settings > Domains & Routes.
-
-## Environment Variables
-
-Set public values as Worker variables and server-only values as Worker secrets in Cloudflare. For CLI-managed secrets:
-
-```bash
-npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
-npx wrangler secret put META_CAPI_ACCESS_TOKEN
-```
-
-At minimum, production needs:
+Set public values as Cloudflare Worker variables and server-only values as Worker secrets.
 
 ```text
 NEXT_PUBLIC_SUPABASE_URL
@@ -44,12 +30,24 @@ NEXT_PUBLIC_META_PIXEL_ID
 META_CAPI_ACCESS_TOKEN
 ```
 
-For Workers Builds from GitHub, also add build variables/secrets in Cloudflare so `next build` can inline the `NEXT_PUBLIC_` values.
+CLI secrets:
 
-## Before Google Ads
+```bash
+npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+npx wrangler secret put META_CAPI_ACCESS_TOKEN
+```
 
+Workers Builds from GitHub also need build-time `NEXT_PUBLIC_` values so `next build` can inline them.
+
+## Domain Notes
+
+`wrangler.jsonc` declares custom domains for both hostnames. If Cloudflare reports a route conflict, remove the conflicting `76.76.21.21` A records or attach the domains manually from Workers & Pages > `forza-clearmatch` > Settings > Domains & Routes.
+
+## Before Ads
+
+- Confirm the live domain resolves to the Worker.
+- Confirm Supabase auth, leads, dashboard, admin, uploads, and offer publishing work in production.
+- Confirm analytics and conversion env vars are set.
 - Do not publish the owner home address unless counsel says it is required.
-- For paid Google Ads, use a compliant public physical business address before launch. Prefer a legitimate registered agent, staffed office, or compliant commercial business address instead of the home address if counsel approves.
-- Confirm `https://forza-funding.com` resolves to the Cloudflare Worker.
-- Set production analytics/conversion env vars in Cloudflare.
-- Confirm counsel has reviewed financial-services disclosures, paid-ad copy, commercial-financing obligations, privacy language, and document workflows before paid traffic.
+- Use a compliant public business address strategy before Google Ads.
+- Counsel must review disclosures, ad copy, commercial-financing obligations, privacy language, and document workflows.
