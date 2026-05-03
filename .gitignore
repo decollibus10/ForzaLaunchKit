@@ -10,7 +10,6 @@ dist/
 *.tsbuildinfo
 supabase/.branches
 supabase/.temp
-.vercel
 .open-next/
 .wrangler/
 .dev.vars

@@ -9,8 +9,6 @@
   - `https://forza-funding.com`
   - `https://www.forza-funding.com`
 
-Vercel is no longer the production target for this project.
-
 ## Cloudflare Commands
 
 ```bash
@@ -25,7 +23,7 @@ npm run deploy
 
 The domain uses Cloudflare DNS. `wrangler.jsonc` declares custom domains for `forza-funding.com` and `www.forza-funding.com`, so Cloudflare can attach the Worker directly to both hostnames.
 
-If Cloudflare reports that an existing DNS record blocks the custom domain, remove the old Vercel A records pointing to `76.76.21.21`, then deploy again or add the custom domains from Workers & Pages > `forza-clearmatch` > Settings > Domains & Routes.
+If Cloudflare reports that an existing DNS record blocks the custom domain, remove the conflicting A records pointing to `76.76.21.21`, then deploy again or add the custom domains from Workers & Pages > `forza-clearmatch` > Settings > Domains & Routes.
 
 ## Environment Variables
 
