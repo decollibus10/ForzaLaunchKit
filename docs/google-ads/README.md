@@ -69,6 +69,14 @@ NEXT_PUBLIC_GOOGLE_CALCULATOR_LEAD_CONVERSION_LABEL=
 10. Verify landing pages load, disclosures are visible, and conversions fire.
 11. Turn on Campaign 1 first. Turn on the other two after one clean test conversion.
 
+## CSV Files
+
+- `keywords.csv`: phrase-match launch terms grouped by the three v1 campaigns.
+- `negative-keywords.csv`: account/campaign negatives for consumer, hardship, direct-lender, guaranteed, and no-doc traffic.
+- `responsive-search-ads.csv`: Google Ads Editor-friendly RSA copy using only comparison, dashboard, factor-rate, partner-underwriting, and fee-disclosure anchors.
+- `assets.csv`: sitelinks, callouts, and a structured snippet that keep the $500/month membership, 1% broker-fee cap, and business-purpose positioning visible.
+- `final-urls.csv`: UTM-tagged destination URLs with `{keyword}` and `{gclid}` placeholders.
+
 ## First 72-Hour Rules
 
 - Pause any keyword with spend above `$40` and zero form starts.
