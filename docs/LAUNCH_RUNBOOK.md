@@ -26,11 +26,11 @@ Use the Worker URL until public DNS resolves for the custom domains.
 ```bash
 npm run env:check
 npm run env:check:strict
+npm run worker:secrets:check
 npm run typecheck
 npm run lint
 npm run build
-npm run cloudflare:build
-npx wrangler deploy --dry-run
+npm run check:deploy
 npm run deploy
 npm run smoke:worker
 npm run smoke:prod
@@ -52,6 +52,7 @@ Required for launch:
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 - `NEXT_PUBLIC_SITE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY` as a Worker secret
 
 Required before paid traffic:
 
@@ -62,6 +63,15 @@ Required before paid traffic:
 - `META_CAPI_ACCESS_TOKEN`
 
 Never expose server-only tokens with `NEXT_PUBLIC_`.
+
+Hybrid Supabase rule: local development can use `.env.local` with
+`http://127.0.0.1:58321`, but production Worker builds must use the public
+Supabase Cloud URL from `wrangler.jsonc`. The deploy scripts enforce this by
+injecting Worker vars into the build environment.
+
+The previous Supabase service-role value was exposed during setup and must be
+rotated in Supabase Cloud before setting `SUPABASE_SERVICE_ROLE_KEY` in
+Cloudflare.
 
 ## Smoke Test Coverage
 
@@ -94,6 +104,7 @@ Daily until ads launch:
 ## Blockers Before Spend
 
 - Live domain not resolving to Cloudflare Worker.
+- Supabase service-role key not rotated and reset as a correctly named Worker secret.
 - Supabase auth/RLS/uploads not verified.
 - No compliant public business address strategy.
 - No counsel review for disclosures, ad copy, privacy language, and NJ commercial-financing obligations.

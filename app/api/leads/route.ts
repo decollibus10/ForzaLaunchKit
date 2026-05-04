@@ -38,7 +38,9 @@ export async function POST(request: Request) {
     );
   }
 
+  const leadId = crypto.randomUUID();
   const payload = {
+    id: leadId,
     full_name: clean(body.fullName),
     email,
     phone: clean(body.phone),
@@ -81,18 +83,14 @@ export async function POST(request: Request) {
   }
 
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("leads")
-    .insert(payload)
-    .select("id")
-    .single();
+  const { error } = await supabase.from("leads").insert(payload);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
   await supabase.from("ad_attribution").insert({
-    lead_id: data.id,
+    lead_id: leadId,
     source_page: payload.source_page,
     utm_source: payload.utm_source,
     utm_medium: payload.utm_medium,
@@ -115,7 +113,7 @@ export async function POST(request: Request) {
   });
 
   return NextResponse.json({
-    id: data.id,
-    nextUrl: buildNextUrl(request, email, data.id, payload.funnel)
+    id: leadId,
+    nextUrl: buildNextUrl(request, email, leadId, payload.funnel)
   });
 }

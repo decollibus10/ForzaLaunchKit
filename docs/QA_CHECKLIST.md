@@ -7,8 +7,9 @@ Run this before paid traffic.
 - [ ] `npm run typecheck`
 - [ ] `npm run lint`
 - [ ] `npm run build`
-- [ ] `npm run cloudflare:build`
-- [ ] `npx wrangler deploy --dry-run`
+- [ ] `npm run worker:secrets:check`
+- [ ] `npm run check:deploy`
+- [ ] Bundle env check confirms cloud URLs are present and local URLs are absent.
 - [ ] `npm run smoke:prod`
 - [ ] Live domain serves `/`, `/compare`, `/calculator`, `/login`, and all paid funnel URLs.
 
@@ -32,6 +33,8 @@ Run this before paid traffic.
 
 ## Auth, Dashboard, Admin
 
+- [ ] Supabase Cloud migration `20260503180912` is applied.
+- [ ] Supabase Auth site URL and magic-link template point to `https://forza-funding.com/auth/confirm`.
 - [ ] Logged-out users cannot access dashboard/admin when Supabase env vars are configured.
 - [ ] Magic-link confirmation route works with the Supabase email template.
 - [ ] Merchant dashboard shows published offers only.
@@ -45,5 +48,6 @@ Run this before paid traffic.
 - [ ] RLS is enabled on every exposed public table.
 - [ ] Storage policies restrict documents to merchant owners and admins.
 - [ ] Service role key is never exposed as `NEXT_PUBLIC_`.
+- [ ] `SUPABASE_SERVICE_ROLE_KEY` exists as a Worker secret name, and no JWT-like secret names remain.
 - [ ] Document upload path stays under `merchant-documents/<merchant_profile_id>/...`.
 - [ ] Counsel has reviewed broker disclosure, address strategy, ad copy, privacy language, and NJ commercial-financing obligations.

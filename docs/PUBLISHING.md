@@ -12,14 +12,18 @@
 ```bash
 npm install
 npm run env:check:strict
+npm run worker:secrets:check
 npm run check:deploy
-npm run cloudflare:build
-npx wrangler deploy --dry-run
 npm run deploy
 npm run smoke:prod
 ```
 
-Use `npm run preview` for local Worker runtime testing.
+Use `npm run preview` for local Worker runtime testing. Local preview reads
+`.dev.vars`, which points at the local Supabase stack.
+`npm run check:deploy`, `npm run deploy`, and `npm run upload` inject the
+production public Worker variables from `wrangler.jsonc` before building. The
+deploy check also scans `.next` and `.open-next` so a local `.env.local`
+Supabase URL cannot be silently inlined into the production client bundle.
 
 ## Required Production Env
 
@@ -39,6 +43,16 @@ CLI secrets:
 npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
 npx wrangler secret put META_CAPI_ACCESS_TOKEN
 ```
+
+After rotating the Supabase service-role key, confirm Wrangler secret names:
+
+```bash
+npm run worker:secrets:check
+```
+
+The output must include `SUPABASE_SERVICE_ROLE_KEY`. If a JWT-like value appears
+as a secret name, delete that misnamed secret and rotate the service-role key
+again.
 
 Workers Builds from GitHub also need build-time `NEXT_PUBLIC_` values so `next build` can inline them.
 
