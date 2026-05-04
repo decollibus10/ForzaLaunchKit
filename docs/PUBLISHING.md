@@ -11,9 +11,12 @@
 
 ```bash
 npm install
+npm run env:check:strict
+npm run check:deploy
 npm run cloudflare:build
 npx wrangler deploy --dry-run
 npm run deploy
+npm run smoke:prod
 ```
 
 Use `npm run preview` for local Worker runtime testing.

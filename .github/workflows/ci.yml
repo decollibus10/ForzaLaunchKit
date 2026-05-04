@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+      NEXTJS_ENV: development
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Environment report
+        run: npm run env:check
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Next build
+        run: npm run build
+
+      - name: Cloudflare build
+        run: npm run cloudflare:build
+
+      - name: Wrangler dry run
+        run: npx wrangler deploy --dry-run
+
+      - name: Worker smoke test
+        run: |
+          npx opennextjs-cloudflare preview > /tmp/forza-worker-preview.log 2>&1 &
+          preview_pid=$!
+          trap 'kill $preview_pid || true' EXIT
+          npm run smoke:local

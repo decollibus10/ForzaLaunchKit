@@ -84,6 +84,7 @@ where user_id = '<auth-user-id>';
 npm run typecheck
 npm run lint
 npm run build
+npm run check:deploy
 ```
 
 ## Cloudflare Workers
@@ -97,6 +98,15 @@ npm run deploy
 ```
 
 The Worker is configured in `wrangler.jsonc` for `forza-funding.com` and `www.forza-funding.com`.
+
+Launch helpers:
+
+```bash
+npm run env:check
+npm run smoke:local
+npm run smoke:worker
+npm run smoke:prod
+```
 
 ## Ad Engine
 

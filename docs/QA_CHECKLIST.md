@@ -9,6 +9,7 @@ Run this before paid traffic.
 - [ ] `npm run build`
 - [ ] `npm run cloudflare:build`
 - [ ] `npx wrangler deploy --dry-run`
+- [ ] `npm run smoke:prod`
 - [ ] Live domain serves `/`, `/compare`, `/calculator`, `/login`, and all paid funnel URLs.
 
 ## Public Copy
