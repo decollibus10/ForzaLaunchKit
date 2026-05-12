@@ -2,7 +2,8 @@
 
 ## Current Priority
 
-Get `forza-funding.com` live on Cloudflare Workers, connected to production Supabase, and smoke-tested before paid traffic.
+Get `forza-funding.com` live on Cloudflare Workers, connected to self-hosted
+Supabase, and smoke-tested before paid traffic.
 
 ## Live URLs
 
@@ -64,14 +65,20 @@ Required before paid traffic:
 
 Never expose server-only tokens with `NEXT_PUBLIC_`.
 
-Hybrid Supabase rule: local development can use `.env.local` with
-`http://127.0.0.1:58321`, but production Worker builds must use the public
-Supabase Cloud URL from `wrangler.jsonc`. The deploy scripts enforce this by
-injecting Worker vars into the build environment.
+Self-hosted Supabase rule: local development can use `.env.local` with
+`http://127.0.0.1:58321`, but production Worker builds must use a public HTTPS
+self-hosted Supabase gateway such as `https://supabase.forza-funding.com`.
+Supabase Cloud URLs are blocked in deploy checks until there is a deliberate
+customer-backed spend decision.
 
-The previous Supabase service-role value was exposed during setup and must be
-rotated in Supabase Cloud before setting `SUPABASE_SERVICE_ROLE_KEY` in
-Cloudflare.
+For deploys, put the self-hosted build values in shell env or
+`.env.production.local`, and set these Worker secrets:
+
+```bash
+npx wrangler secret put NEXT_PUBLIC_SUPABASE_URL
+npx wrangler secret put NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+npx wrangler secret put SUPABASE_SERVICE_ROLE_KEY
+```
 
 ## Smoke Test Coverage
 
@@ -104,7 +111,8 @@ Daily until ads launch:
 ## Blockers Before Spend
 
 - Live domain not resolving to Cloudflare Worker.
-- Supabase service-role key not rotated and reset as a correctly named Worker secret.
+- Self-hosted Supabase HTTPS gateway not reachable from Cloudflare Workers.
+- Supabase service-role key not set as a correctly named Worker secret.
 - Supabase auth/RLS/uploads not verified.
 - No compliant public business address strategy.
 - No counsel review for disclosures, ad copy, privacy language, and NJ commercial-financing obligations.

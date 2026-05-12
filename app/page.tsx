@@ -4,6 +4,14 @@ import { DashboardPreview } from "@/components/dashboard-preview";
 import { LeadForm } from "@/components/lead-form";
 import { SubscriptionPanel } from "@/components/subscription-panel";
 import { subscriptionOffer } from "@/lib/config";
+import { pageMetadata } from "@/lib/seo";
+
+export const metadata = pageMetadata({
+  title: "FORZA ClearMatch | Transparent MCA Offer Dashboard",
+  description:
+    "A private MCA offer dashboard for New Jersey merchants comparing factor rates, payback, payment pressure, fees, and funding partner options.",
+  path: "/"
+});
 
 const workflow = [
   {

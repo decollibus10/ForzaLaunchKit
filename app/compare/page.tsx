@@ -3,12 +3,14 @@ import { ArrowRight } from "lucide-react";
 import { LeadForm } from "@/components/lead-form";
 import { OfferDecoder } from "@/components/offer-decoder";
 import { subscriptionOffer } from "@/lib/config";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "Compare an MCA Offer | FORZA ClearMatch",
   description:
-    "Review an outside MCA offer and compare advance, factor rate, payback, payments, fees, term estimate, and cash pressure."
-};
+    "Review an outside MCA offer and compare advance, factor rate, payback, payments, fees, term estimate, and cash pressure.",
+  path: "/compare"
+});
 
 export default function ComparePage() {
   return (

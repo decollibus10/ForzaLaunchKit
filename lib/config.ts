@@ -71,6 +71,24 @@ export function hasSupabasePublicEnv() {
   return Boolean(supabaseConfig.url && supabaseConfig.publishableKey);
 }
 
+function isLocalSiteUrl(value: string) {
+  try {
+    const hostname = new URL(value).hostname;
+    return hostname === "localhost" || hostname === "127.0.0.1" || hostname === "0.0.0.0";
+  } catch {
+    return false;
+  }
+}
+
+export function canRenderLocalDemoData() {
+  if (process.env.NODE_ENV !== "development") {
+    return false;
+  }
+
+  const configuredSiteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+  return !configuredSiteUrl || isLocalSiteUrl(configuredSiteUrl);
+}
+
 export function getSupabasePublicEnv() {
   if (!hasSupabasePublicEnv()) {
     throw new Error(

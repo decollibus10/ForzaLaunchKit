@@ -88,7 +88,16 @@ function hasValue(key) {
   return Boolean(String(env[key] || "").trim());
 }
 
+function isSupabaseCloudUrl(value) {
+  try {
+    return new URL(value).hostname.endsWith(".supabase.co");
+  } catch {
+    return false;
+  }
+}
+
 const missingRequired = [];
+const blockedCloudUrls = [];
 
 console.log("FORZA environment check");
 console.log(`Loaded local env files: ${loadedFiles.length ? loadedFiles.join(", ") : "none"}`);
@@ -106,6 +115,13 @@ for (const group of groups) {
   console.log("");
 }
 
+if (
+  hasValue("NEXT_PUBLIC_SUPABASE_URL") &&
+  isSupabaseCloudUrl(String(env.NEXT_PUBLIC_SUPABASE_URL))
+) {
+  blockedCloudUrls.push("NEXT_PUBLIC_SUPABASE_URL");
+}
+
 const leakedPublicSecrets = Object.keys(env).filter((key) => {
   if (!key.startsWith("NEXT_PUBLIC_")) {
     return false;
@@ -121,13 +137,24 @@ if (leakedPublicSecrets.length) {
   console.log("");
 }
 
-if (missingRequired.length || leakedPublicSecrets.length) {
+if (blockedCloudUrls.length) {
+  console.log("Self-hosting policy");
+  for (const key of blockedCloudUrls) {
+    console.log(`  BLOCKED ${key} points at Supabase Cloud; use the local CLI stack or a self-hosted HTTPS gateway.`);
+  }
+  console.log("");
+}
+
+if (missingRequired.length || leakedPublicSecrets.length || blockedCloudUrls.length) {
   console.log("Result");
   if (missingRequired.length) {
     console.log(`  Missing required launch vars: ${missingRequired.join(", ")}`);
   }
   if (leakedPublicSecrets.length) {
     console.log(`  Unsafe public secret names: ${leakedPublicSecrets.join(", ")}`);
+  }
+  if (blockedCloudUrls.length) {
+    console.log(`  Supabase Cloud URLs blocked: ${blockedCloudUrls.join(", ")}`);
   }
   if (strict) {
     process.exit(1);

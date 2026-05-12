@@ -31,6 +31,7 @@ If a merchant funds through FORZA, FORZA may receive or retain a broker fee capp
 ```bash
 npm install
 cp .env.example .env.local
+cp .env.production.local.example .env.production.local
 npm run dev
 ```
 
@@ -62,6 +63,8 @@ Start local Supabase:
 
 ```bash
 npm run supabase:start
+npm run supabase:status
+npm run supabase:env
 npm run supabase:reset
 ```
 
@@ -84,6 +87,7 @@ where user_id = '<auth-user-id>';
 npm run typecheck
 npm run lint
 npm run build
+npm run env:check:deploy
 npm run check:deploy
 ```
 
@@ -93,6 +97,7 @@ The production target is Cloudflare Workers using `@opennextjs/cloudflare`.
 
 ```bash
 cp .dev.vars.example .dev.vars
+cp .env.production.local.example .env.production.local
 npm run preview
 npm run deploy
 ```

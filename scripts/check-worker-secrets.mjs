@@ -2,7 +2,15 @@ import { spawnSync } from "node:child_process";
 import process from "node:process";
 
 const args = new Set(process.argv.slice(2));
-const requiredSecrets = ["SUPABASE_SERVICE_ROLE_KEY"];
+const wranglerEnv = {
+  ...process.env,
+  WRANGLER_LOG_PATH: process.env.WRANGLER_LOG_PATH || ".wrangler/logs"
+};
+const requiredSecrets = [
+  "NEXT_PUBLIC_SUPABASE_URL",
+  "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY",
+  "SUPABASE_SERVICE_ROLE_KEY"
+];
 
 if (args.has("--paid")) {
   requiredSecrets.push("META_CAPI_ACCESS_TOKEN");
@@ -22,7 +30,15 @@ function redact(value) {
   return `${value.slice(0, 4)}...${value.slice(-4)}`;
 }
 
+if (!String(process.env.CLOUDFLARE_API_TOKEN || "").trim()) {
+  console.error(
+    "Worker secret check failed. CLOUDFLARE_API_TOKEN is required before Wrangler can validate secret names."
+  );
+  process.exit(1);
+}
+
 const result = spawnSync("npx", ["wrangler", "secret", "list"], {
+  env: wranglerEnv,
   encoding: "utf8"
 });
 

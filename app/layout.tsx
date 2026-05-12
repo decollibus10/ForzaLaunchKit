@@ -3,13 +3,18 @@ import { AnalyticsNoScript, AnalyticsScripts } from "@/components/analytics-scri
 import { AttributionCapture } from "@/components/attribution-capture";
 import { BrokerDisclosure } from "@/components/disclosure";
 import { SiteHeader } from "@/components/site-header";
+import { StructuredData } from "@/components/structured-data";
 import { site, subscriptionOffer } from "@/lib/config";
+import { pageMetadata } from "@/lib/seo";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: `${site.productName} | Transparent MCA Offer Dashboard`,
-  description:
-    "A private MCA offer dashboard for New Jersey merchants comparing factor rates, payback, payment pressure, fees, and funding partner options.",
+  ...pageMetadata({
+    title: `${site.productName} | Transparent MCA Offer Dashboard`,
+    description:
+      "A private MCA offer dashboard for New Jersey merchants comparing factor rates, payback, payment pressure, fees, and funding partner options.",
+    path: "/"
+  }),
   metadataBase: new URL(site.url)
 };
 
@@ -20,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AnalyticsNoScript />
         <AnalyticsScripts />
         <AttributionCapture />
+        <StructuredData />
         <SiteHeader />
         {children}
         <BrokerDisclosure />

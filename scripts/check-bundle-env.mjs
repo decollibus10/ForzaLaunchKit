@@ -1,6 +1,11 @@
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import process from "node:process";
+import {
+  WRANGLER_CONFIG,
+  resolveWorkerVars,
+  validateProductionVars
+} from "./env-utils.mjs";
 
 const roots = [".next", ".open-next"];
 const localPatterns = [
@@ -8,9 +13,26 @@ const localPatterns = [
   "http://localhost:58321",
   "http://127.0.0.1:3000"
 ];
+const forbiddenPatterns = [
+  ...localPatterns,
+  ".supabase.co"
+];
+let resolved;
+try {
+  resolved = resolveWorkerVars();
+  validateProductionVars(resolved.vars);
+} catch (error) {
+  console.error(`Bundle env check failed. ${error.message}`);
+  process.exit(1);
+}
+
 const expectedProductionPatterns = [
-  "https://rhofkdvolzgbhoananoi.supabase.co",
-  "https://forza-funding.com"
+  resolved.vars.NEXT_PUBLIC_SUPABASE_URL,
+  resolved.vars.NEXT_PUBLIC_SITE_URL || "https://forza-funding.com"
+].filter(Boolean);
+const expectedLabels = [
+  resolved.vars.NEXT_PUBLIC_SUPABASE_URL,
+  resolved.vars.NEXT_PUBLIC_SITE_URL || "https://forza-funding.com"
 ];
 const ignoredPathSegments = [
   `${join(".next", "dev")}${"/"}`,
@@ -61,7 +83,7 @@ const foundProductionPatterns = new Set();
 
 for (const file of files) {
   const body = readFileSync(file, "utf8");
-  for (const pattern of localPatterns) {
+  for (const pattern of forbiddenPatterns) {
     if (body.includes(pattern)) {
       findings.push(`${file}: contains ${pattern}`);
     }
@@ -74,7 +96,7 @@ for (const file of files) {
 }
 
 if (findings.length) {
-  console.error("Bundle env check failed. Local Supabase/site URLs were found in build output.");
+  console.error("Bundle env check failed. Local or Supabase Cloud URLs were found in build output.");
   for (const finding of findings.slice(0, 20)) {
     console.error(`  ${finding}`);
   }
@@ -87,9 +109,11 @@ const missingExpected = expectedProductionPatterns.filter(
 
 if (missingExpected.length) {
   console.error(
-    `Bundle env check failed. Expected production values were not found: ${missingExpected.join(", ")}`
+    `Bundle env check failed. Expected self-hosted production values were not found: ${missingExpected.join(", ")}`
   );
   process.exit(1);
 }
 
-console.log("Bundle env check passed: production URLs present, local URLs absent.");
+console.log(`Bundle env check passed: ${expectedLabels.join(", ")} present, local and Supabase Cloud URLs absent.`);
+const envSources = resolved.loadedFiles.length ? resolved.loadedFiles.join(", ") : "none";
+console.log(`Resolved deploy env from ${envSources} and ${WRANGLER_CONFIG}.`);

@@ -57,6 +57,8 @@ const routes = [
   }
 ];
 
+const protectedRoutes = ["/dashboard", "/admin"];
+
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -70,6 +72,12 @@ async function fetchWithTimeout(url, options = {}) {
   const timer = setTimeout(() => controller.abort(), config.timeoutMs);
   try {
     return await fetch(url, { ...options, signal: controller.signal });
+  } catch (error) {
+    const cause = error.cause;
+    const details = cause?.code
+      ? `${cause.code}${cause.hostname ? ` ${cause.hostname}` : ""}`
+      : error.message;
+    throw new Error(`${url} fetch failed: ${details}`);
   } finally {
     clearTimeout(timer);
   }
@@ -113,6 +121,24 @@ async function checkRoute(route) {
   console.log(`OK ${route.path}`);
 }
 
+async function checkProtectedRoute(path) {
+  const response = await fetchWithTimeout(urlFor(path), {
+    headers: { Accept: "text/html" },
+    redirect: "manual"
+  });
+  const location = response.headers.get("location") || "";
+
+  if (![302, 303, 307, 308].includes(response.status) || !location.startsWith("/login")) {
+    const body = await response.text();
+    const hint = body.includes("Demo mode") ? " rendered demo data" : "";
+    throw new Error(
+      `${path} must redirect unauthenticated users to /login; got ${response.status} ${location}${hint}`
+    );
+  }
+
+  console.log(`OK ${path} -> ${location}`);
+}
+
 async function checkLeadWrite() {
   const email = `smoke+${Date.now()}@example.com`;
   const response = await fetchWithTimeout(urlFor("/api/leads"), {
@@ -152,6 +178,10 @@ console.log(`Lead write: ${config.writeLead ? "enabled" : "disabled"}`);
 await retry("route checks", async () => {
   for (const route of routes) {
     await checkRoute(route);
+  }
+
+  for (const path of protectedRoutes) {
+    await checkProtectedRoute(path);
   }
 });
 

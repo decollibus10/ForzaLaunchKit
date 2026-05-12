@@ -1,11 +1,13 @@
 import { LoginForm } from "@/components/login-form";
 import { subscriptionOffer } from "@/lib/config";
+import { noIndexPageMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = noIndexPageMetadata({
   title: "Create Your Offer Dashboard | FORZA ClearMatch",
   description:
-    "Create a private FORZA ClearMatch dashboard with email magic-link login."
-};
+    "Create a private FORZA ClearMatch dashboard with email magic-link login.",
+  path: "/login"
+});
 
 type LoginPageProps = {
   searchParams: Promise<{

@@ -2,12 +2,14 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { FactorCalculator } from "@/components/factor-calculator";
 import { subscriptionOffer } from "@/lib/config";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata = {
+export const metadata = pageMetadata({
   title: "MCA Factor Rate Calculator | FORZA ClearMatch",
   description:
-    "Estimate MCA total payback, payment term, and weekly cash pressure before reviewing funding offers."
-};
+    "Estimate MCA total payback, payment term, and weekly cash pressure before reviewing funding offers.",
+  path: "/calculator"
+});
 
 export default function CalculatorPage() {
   return (

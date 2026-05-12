@@ -15,9 +15,9 @@
   "observability": {
     "enabled": true
   },
+  // Supabase values come from local env files at build time and Worker secrets
+  // at runtime. Do not commit Supabase Cloud URLs before customers exist.
   "vars": {
-    "NEXT_PUBLIC_SUPABASE_URL": "https://rhofkdvolzgbhoananoi.supabase.co",
-    "NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY": "sb_publishable_4h2XhgRIyp-lT9KIkKnNZQ_f9hTrzHE",
     "NEXT_PUBLIC_SITE_URL": "https://forza-funding.com",
     "META_CAPI_GRAPH_API_VERSION": "v24.0"
   },

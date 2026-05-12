@@ -16,6 +16,7 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "env:check": "node scripts/check-env.mjs",
     "env:check:strict": "node scripts/check-env.mjs --strict",
+    "env:check:deploy": "node scripts/run-with-worker-vars.mjs -- npm run env:check:strict",
     "smoke:local": "node scripts/smoke.mjs --base=http://localhost:8787 --write",
     "smoke:worker": "node scripts/smoke.mjs --base=https://forza-clearmatch.c10decollibus.workers.dev --read-only",
     "smoke:prod": "node scripts/smoke.mjs --base=https://forza-funding.com --read-only",
@@ -28,7 +29,10 @@
     "worker:secrets:check": "node scripts/check-worker-secrets.mjs",
     "worker:secrets:check:paid": "node scripts/check-worker-secrets.mjs --paid",
     "supabase:start": "npx supabase start -x vector",
+    "supabase:status": "npx supabase status",
+    "supabase:env": "npx supabase status -o env",
     "supabase:reset": "npx supabase db reset",
+    "supabase:stop": "npx supabase stop",
     "supabase:migrations": "npx supabase migration list --local"
   },
   "dependencies": {

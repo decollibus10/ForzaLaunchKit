@@ -3,7 +3,11 @@ import { CreditCard, FileText, ShieldCheck } from "lucide-react";
 import { DealTimeline } from "@/components/deal-timeline";
 import { DocumentUpload } from "@/components/document-upload";
 import { OfferCard } from "@/components/offer-card";
-import { hasSupabasePublicEnv, subscriptionOffer } from "@/lib/config";
+import {
+  canRenderLocalDemoData,
+  hasSupabasePublicEnv,
+  subscriptionOffer
+} from "@/lib/config";
 import { currency } from "@/lib/offer-math";
 import {
   sampleEvents,
@@ -11,6 +15,7 @@ import {
   sampleMerchant,
   sampleOffers
 } from "@/lib/sample-data";
+import { noIndexPageMetadata } from "@/lib/seo";
 import { createClient, getCurrentUser } from "@/lib/supabase/server";
 import type { DealEvent, DealFile, MerchantProfile, Offer } from "@/lib/types";
 
@@ -120,6 +125,10 @@ function mapEvent(row: EventRow): DealEvent {
 
 async function loadDashboardData() {
   if (!hasSupabasePublicEnv()) {
+    if (!canRenderLocalDemoData()) {
+      redirect("/login");
+    }
+
     return {
       merchant: sampleMerchant,
       offers: sampleOffers,
@@ -179,9 +188,11 @@ async function loadDashboardData() {
   };
 }
 
-export const metadata = {
-  title: "Merchant Dashboard | FORZA ClearMatch"
-};
+export const metadata = noIndexPageMetadata({
+  title: "Merchant Dashboard | FORZA ClearMatch",
+  description: "Private FORZA ClearMatch merchant dashboard.",
+  path: "/dashboard"
+});
 
 export const dynamic = "force-dynamic";
 

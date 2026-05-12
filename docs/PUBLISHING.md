@@ -12,6 +12,7 @@
 ```bash
 npm install
 npm run env:check:strict
+npm run env:check:deploy
 npm run worker:secrets:check
 npm run check:deploy
 npm run deploy
@@ -19,11 +20,14 @@ npm run smoke:prod
 ```
 
 Use `npm run preview` for local Worker runtime testing. Local preview reads
-`.dev.vars`, which points at the local Supabase stack.
-`npm run check:deploy`, `npm run deploy`, and `npm run upload` inject the
-production public Worker variables from `wrangler.jsonc` before building. The
-deploy check also scans `.next` and `.open-next` so a local `.env.local`
-Supabase URL cannot be silently inlined into the production client bundle.
+`.dev.vars`, which points at the local Supabase stack. Copy
+`.env.production.local.example` to `.env.production.local` for deploy-style
+checks and replace the placeholders with the real self-hosted HTTPS gateway
+values. `npm run env:check:deploy`, `npm run check:deploy`, `npm run deploy`,
+and `npm run upload` inject the production public Worker variables before the
+build. The deploy check also scans `.next` and `.open-next` so a local
+`.env.local` Supabase URL cannot be silently inlined into the production client
+bundle.
 
 ## Required Production Env
 

@@ -1,9 +1,14 @@
 import { redirect } from "next/navigation";
 import { Eye, EyeOff, Plus } from "lucide-react";
 import { createOffer, updateOfferStatus } from "@/app/admin/actions";
-import { hasSupabasePublicEnv, subscriptionOffer } from "@/lib/config";
+import {
+  canRenderLocalDemoData,
+  hasSupabasePublicEnv,
+  subscriptionOffer
+} from "@/lib/config";
 import { currency } from "@/lib/offer-math";
 import { sampleMerchant, sampleOffers } from "@/lib/sample-data";
+import { noIndexPageMetadata } from "@/lib/seo";
 import { createClient, getCurrentUser } from "@/lib/supabase/server";
 
 type AdminMerchant = {
@@ -104,6 +109,10 @@ function summarizePerformance(leads: AdminLead[], conversions: AdminConversion[]
 
 async function loadAdminData() {
   if (!hasSupabasePublicEnv()) {
+    if (!canRenderLocalDemoData()) {
+      redirect("/login");
+    }
+
     return {
       demo: true,
       merchants: [
@@ -209,9 +218,11 @@ async function loadAdminData() {
   };
 }
 
-export const metadata = {
-  title: "Admin Deal Desk | FORZA ClearMatch"
-};
+export const metadata = noIndexPageMetadata({
+  title: "Admin Deal Desk | FORZA ClearMatch",
+  description: "Private FORZA ClearMatch admin deal desk.",
+  path: "/admin"
+});
 
 export const dynamic = "force-dynamic";
 
